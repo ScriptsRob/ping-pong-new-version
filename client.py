@@ -41,7 +41,8 @@ def receive():
 font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
-
+bg_image = image.load("bg.jpg")
+bg_image = transform.scale(bg_image, ((WIDTH,HEIGHT)))
 # --- ЗВУКИ ---
 
 # --- ГРА ---
@@ -51,19 +52,18 @@ you_winner = None
 my_id, game_state, buffer, client = connect_to_server()
 Thread(target=receive, daemon=True).start()
 while True:
+    screen.blit(bg_image,(0,0))
     for e in event.get():
         if e.type == QUIT:
             exit()
 
     if "countdown" in game_state and game_state["countdown"] > 0:
-        screen.fill((0, 0, 0))
         countdown_text = font.Font(None, 72).render(str(game_state["countdown"]), True, (255, 255, 255))
         screen.blit(countdown_text, (WIDTH // 2 - 20, HEIGHT // 2 - 30))
         display.update()
         continue  # Не малюємо гру до завершення відліку
 
     if "winner" in game_state and game_state["winner"] is not None:
-        screen.fill((20, 20, 20))
 
         if you_winner is None:  # Встановлюємо тільки один раз
             if game_state["winner"] == my_id:
@@ -88,7 +88,6 @@ while True:
         continue  # Блокує гру після перемоги
 
     if game_state:
-        screen.fill((30, 30, 30))
         draw.rect(screen, (0, 255, 0), (20, game_state['paddles']['0'], 20, 100))
         draw.rect(screen, (255, 0, 255), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
