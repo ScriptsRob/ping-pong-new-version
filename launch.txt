@@ -1,0 +1,2 @@
+python D:\Logika_projects\PygameProjects\ping-pong\client.py
+python D:\Logika_projects\PygameProjects\ping-pong\server.py

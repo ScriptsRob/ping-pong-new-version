@@ -7,7 +7,7 @@ import random
 WIDTH, HEIGHT = 800, 600
 BALL_SPEED = 5
 PADDLE_SPEED = 10
-COUNTDOWN_START = 3
+COUNTDOWN_START = 5
 
 class GameServer:
     def __init__(self, host='localhost', port=8080):
@@ -42,7 +42,7 @@ class GameServer:
                 data = conn.recv(64).decode()
                 with self.lock:
                     if data == "UP":
-                        self.paddles[pid] = max(60, self.paddles[pid] - PADDLE_SPEED)
+                        self.paddles[pid] = max(10, self.paddles[pid] - PADDLE_SPEED)
                     elif data == "DOWN":
                         self.paddles[pid] = min(HEIGHT - 100, self.paddles[pid] + PADDLE_SPEED)
         except:
@@ -80,7 +80,7 @@ class GameServer:
                 self.ball['x'] += self.ball['vx']
                 self.ball['y'] += self.ball['vy']
 
-                if self.ball['y'] <= 60 or self.ball['y'] >= HEIGHT:
+                if self.ball['y'] <= 10 or self.ball['y'] >= HEIGHT:
                     self.ball['vy'] *= -1
                     self.sound_event = "wall_hit"
 
